@@ -46,9 +46,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // no #ifdefing here, Cinema4D support is carried out in a branch of assimp
 // where it is turned on in the CMake settings. 
 
-#ifndef _MSC_VER
-#	error C4D support is currently MSVC only
-#endif 
+
+#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(_MSC_VER)
+#	define __PC 
+
+#elif defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
+#	define __MAC
+#else
+	#error "C4DImporter compile error: Unknown platform"
+#endif
+
 
 #include "C4DImporter.h"
 #include "TinyFormatter.h"
@@ -57,7 +64,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #	define __C4D_64BIT
 #endif
 
-#define __PC 
 #include "c4d_file.h"
 #include "default_alien_overloads.h"
 
